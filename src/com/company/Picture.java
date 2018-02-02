@@ -218,8 +218,60 @@ public class Picture extends SimplePicture
       }
     }
   }
-  
-  
+
+  public void negate() {
+      Pixel[][] pixels = this.getPixels2D();
+      for (Pixel[] rowArray : pixels)
+      {
+          for (Pixel pixelObj : rowArray)
+          {
+              pixelObj.setRed(255-pixelObj.getRed());
+              pixelObj.setGreen(255-pixelObj.getGreen());
+              pixelObj.setBlue(255-pixelObj.getBlue());
+          }
+      }
+  }
+
+  public void grayscale(){
+      Pixel[][] pixels = this.getPixels2D();
+      for (Pixel[] rowArray : pixels)
+      {
+          for (Pixel pixelObj : rowArray)
+          {
+              pixelObj.setRed((pixelObj.getRed()+pixelObj.getGreen()+pixelObj.getBlue())/3);
+              pixelObj.setGreen((pixelObj.getRed()+pixelObj.getGreen()+pixelObj.getBlue())/3);
+              pixelObj.setBlue((pixelObj.getRed()+pixelObj.getGreen()+pixelObj.getBlue())/3);
+          }
+      }
+  }
+
+  public void fixUnderwater(){
+      Pixel leftPixel = null;
+      Pixel rightPixel = null;
+      Pixel[][] pixels = this.getPixels2D();
+      Color rightColor = null;
+      for (int row = 0; row < pixels.length; row++)
+      {
+          for (int col = 0;
+               col < pixels[0].length-1; col++)
+          {
+              leftPixel = pixels[row][col];
+              rightPixel = pixels[row][col+1];
+              rightColor = rightPixel.getColor();
+              if (leftPixel.colorDistance(rightColor) >
+                      22) {
+                  //leftPixel.setColor(Color.BLACK);
+              }
+
+              else {
+                  leftPixel.setRed(leftPixel.getRed()-30);
+                  leftPixel.setGreen(leftPixel.getGreen()-30);
+                  leftPixel.setBlue(leftPixel.getBlue()-30);
+              }
+          }
+      }
+  }
+
   /* Main method for testing - each class in Java can have a main 
    * method 
    */
